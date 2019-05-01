@@ -1,0 +1,6 @@
+<h1>author</h1>
+<h3>{{author.0}}</h1>
+<p>{{author.0.bio}}</p>
+{% for recipe in recipes %}
+    {% include 'recipe_partial.html' with recipe=recipe %}
+{% endfor %}
