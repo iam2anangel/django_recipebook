@@ -1,0 +1,11 @@
+<h1>Recipe</h1>
+<div style="border: 2px dotted">
+    <h2>{{recipe.0.title}}</h2>
+    <a href='/author/{{recipe.0.author.user_backend.id}}'>
+        <h5>by. {{recipe.0.author.name}}</h4>
+    </a>
+    <h3>{{recipe.0.description}}</h3>
+    <h4>Required time: {{recipe.0.time_required}}</h3>
+        <h5>Instructions: {{recipe.0.instructions}}
+    </h4>
+</div>
