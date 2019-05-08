@@ -1,8 +1,14 @@
-
+<h1>{{ greeting }}</h1>
 <h1>Recipes</h1>
 {% for recipe in recipes %}
     {% include 'recipe_partial.html' with recipe=recipe %}
 {% endfor %}
-<a href='/addrecipe'>Click here to add a recipe</a>
-<br><br>
-<a href='/addauthor'>Click here to add an author</a>
+<a href='/addrecipe'>add a recipe</a>
+<br>
+<a href='/addauthor'>add an author</a>
+<br>
+<a href='/login'>login</a>
+<br>
+<a href='signup'>signup</a>
+<br>
+<a href='logout'>logout</a>
