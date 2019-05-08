@@ -11,3 +11,18 @@ class RecipeAddForm(forms.Form):
     time_required = forms.CharField(max_length=100)
     instructions = forms.CharField(max_length=10000)
     author = forms.ModelChoiceField(queryset=RecipeAuthor.objects.all())
+
+class SudoRecipeAddForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    description = forms.CharField(max_length=1000)
+    time_required = forms.CharField(max_length=50)
+    instructions = forms.CharField(widget=forms.Textarea)
+    author = forms.ModelChoiceField(queryset=RecipeAuthor.objects.all())
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=50)
+    password = forms.CharField(widget=forms.PasswordInput())
+
+class SignupForm(forms.Form):
+    username = forms.CharField(max_length=50)
+    password = forms.CharField(widget=forms.PasswordInput())

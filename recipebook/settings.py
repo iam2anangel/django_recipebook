@@ -25,7 +25,10 @@ SECRET_KEY = 'nz#_ej0wj8+vye9+-%%t#6bvq3u451xkdw#f*w&n=7e173_!mf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/'
 
 
 # Application definition
