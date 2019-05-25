@@ -1,0 +1,29 @@
+to create a local repository on someone else's project:
+.git/config change name and save to upstream
+git remote add origin plus the link
+run in terminal 
+modifies the remote
+git push origin master
+now on my computer i have an upstream version and a forked version so now we need to link with github
+
+
+git fork
+copy path with ssh
+ssh password is August17
+git clone plus link 
+cd into project
+git pull so they can see changes need help with this though
+
+you could create another branch and do work there
+then commit to branch
+git add butts
+git commit -sm "touched the butt"
+git checkout master and the other branch will not be there
+git branch morethings
+git checkout morethings
+make changes
+git add .
+git commit
+git checkout morethings
+
+git checkout -b butts - creates a new branch and immediately checks it out
