@@ -4,3 +4,7 @@
 {% for recipe in recipes %}
     {% include 'recipe_partial.html' with recipe=recipe %}
 {% endfor %}
+
+{% if request.user.is_active %}
+    <a href="/favorites/{{ request.user.author.id }}">My Favorites</a>
+{% endif %}

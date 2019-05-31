@@ -1,4 +1,4 @@
-#!/Users/stealth/Documents/Projects/Python/week13/django_recipebook/.venv/bin/python2.7
+#!/Users/browningfam/python/django_recipebook/.venv/bin/python3
 from django.core import management
 
 if __name__ == "__main__":

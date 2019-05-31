@@ -1,14 +1,13 @@
-from django.shortcuts import render
-from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from recipebook.models import Recipe
-from recipebook.models import RecipeAuthor
-from recipebook.forms import AuthorAddForm, RecipeAddForm, LoginForm, SignupForm, SudoRecipeAddForm
+from recipebook.models import RecipeAuthor, Recipe, User
+from recipebook.forms import AuthorAddForm, RecipeAddForm, LoginForm, SignupForm, SudoRecipeAddForm, EditRecipeForm
+
+
 
 def index(request):
     recipes = Recipe.objects.all()
@@ -18,12 +17,13 @@ def index(request):
     return render(request, html, {'recipes':recipes, 'greeting': greeting})
 
 def recipe(request, recipe_id):
-    recipe = Recipe.objects.filter(id=recipe_id)
+    recipe = Recipe.objects.filter(id=recipe_id).first()
     html = 'recipe.html'
     return render(request, html, {'recipe':recipe})
 
 def author(request, author_id):
     author = RecipeAuthor.objects.filter(user_backend=author_id)
+    # favorites = author[0].favorites.get_queryset()
     recipes = Recipe.objects.filter(author_id=author_id)
     html = 'author.html'
     return render(request, html, {'author':author, 'recipes':recipes})
@@ -119,3 +119,55 @@ def signup_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('homepage'))
+
+
+@login_required()
+def editrecipe(request, id):
+    html = 'edit_recipe.html'
+    form = None
+    recipe = Recipe.objects.filter(id=id)
+    title = Recipe.objects.filter(id=id).values_list('title', flat=True).first()
+    author = Recipe.objects.filter(id=id).values_list('author', flat=True).first()
+    description = Recipe.objects.filter(id=id).values_list('description', flat=True).first()
+    time_required = Recipe.objects.filter(id=id).values_list('time_required', flat=True).first()
+    instructions = Recipe.objects.filter(id=id).values_list('instructions', flat=True).first()
+    if request.method == 'POST':
+        form = EditRecipeForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            recipe.update(
+                title=data['title'],
+                # author=data['author'],
+                description=data['description'],
+                time_required=data['time_required'],
+                instructions=data['instructions'],
+            )
+        return render(request, 'updated_recipe.html')
+    else:
+        form = RecipeAddForm(initial={'title': title, 'author': author, 'description': description, 'time_required': time_required, 'instructions': instructions})
+    return render(request, html, {'form': form})
+
+
+@login_required()
+def myfavorites(request):
+    html = 'favorites.html'
+    page_options = {}
+    if request.user.author:
+        recipes = request.user.author.favorites.all()
+        page_options.update({"recipes": recipes})
+    return render(request, html, page_options)
+
+
+def favorite(request, recipe_id):
+    """To favorite a recipe """
+    user = request.user.author
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+    if recipe not in user.favorites.all():
+        user.favorites.add(recipe)
+    elif recipe in user.favorites.all():
+        user.favorites.remove(recipe)
+    return HttpResponseRedirect(reverse('recipe', kwargs={"recipe_id": recipe_id}))
+
+
+
+

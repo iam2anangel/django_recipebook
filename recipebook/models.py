@@ -12,10 +12,12 @@ class RecipeAuthor(models.Model):
         default=''
         )
     bio = models.TextField(default='')
+    favorites = models.ManyToManyField(
+        'Recipe', related_name='favorites', blank=True)
+    
     
     def __str__(self):
         return self.name
-
 
 class Recipe(models.Model):
     title = models.CharField(max_length=50)
@@ -23,6 +25,11 @@ class Recipe(models.Model):
     description = models.CharField(max_length=1000)
     time_required = models.CharField(max_length=50)
     instructions = models.TextField(default='')
+    
+   
 
     def __str__(self):
         return self.title
+
+
+   
